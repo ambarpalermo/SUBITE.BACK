@@ -11,18 +11,26 @@ app.use(logger);
 
 //SETUP ---------------------------------------------------------------------------------------------
 
-app.get('/hard', (req, res) => {
-    //recibo datos hard
+app.post('/hard', (req, res) => {
+    console.log(req.body)
+    console.log("recibido.hard")
+    let {temp} = req.body
+    console.log(temp)
+
+    res.json({message: "hola kuki"})
 })
 
 app.post('/IA', (req, res) => {
     console.log(req.body)
-    console.log("recibido")
+    console.log("recibido.IA")
     let {personas} = req.body
-    personas = parseInt(personas);
     console.log(personas)
-
+    //db.conexiones
     res.json({message: "hola juana"})
+})
+
+app.get('/IAdatos', (req, res) =>{
+    //con.query select datos para thiago
 })
 
 //config-----------------------------------------------------------------------------------
