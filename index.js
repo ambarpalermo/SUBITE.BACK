@@ -22,7 +22,7 @@ app.post('/IA', (req, res) => {
     personas = parseInt(personas);
     console.log(personas)
 
-    res.json({message: "juanelson"})
+    res.json({message: "hola juana"})
 })
 
 //config-----------------------------------------------------------------------------------
