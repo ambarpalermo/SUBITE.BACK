@@ -14,12 +14,3 @@ model Conexiones {
   temp Int
 }
 
-model Estaciones {
-  id Int @unique @default(autoincrement())
-  estacion String 
-}
-
-model Lineas {
-  id Int @unique @default(autoincrement())
-  linea String
-}
