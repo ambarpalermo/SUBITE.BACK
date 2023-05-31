@@ -59,6 +59,7 @@ app.post('/IA', async(req: Request, res: Response ) => {
 
 app.get('/IAdatos', async (req: Request, res: Response) =>{
     const dbResult = await prisma.conexiones.findMany(); 
+    res.header('Access-Control-Allow-Origin', '*');
     console.log(dbResult)
     res.json({message: "hola thiago", data: dbResult})
 })
