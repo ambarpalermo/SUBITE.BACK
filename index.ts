@@ -1,6 +1,6 @@
 import express, { RequestHandler } from "express"
 import { Request, Response } from "express";
-import { prisma } from "./database/db.ts";
+import {prisma} from "./database/db.ts";
 import cors from "cors";
 
 //console.log(prisma);
@@ -25,14 +25,14 @@ app.use(logger);
 
 //SETUP ---------------------------------------------------------------------------------------------
 
-app.post('/hard', (req: Request, res: Response) => {
+app.post('/hard', async(req: Request, res: Response) => {
     console.log(req.body)
     console.log("recibido.hard")
-    let {temp} = req.body
+    let {temp, idVagon, idTren} = req.body
     console.log(temp)
-    const dbResult = prisma.conexiones.update({
+    const dbResult = await prisma.vagon.update({
         where: {
-            id: 1
+            id: 1,
           },
           data: {
               temp: temp
@@ -44,11 +44,11 @@ app.post('/hard', (req: Request, res: Response) => {
 app.post('/IA', async(req: Request, res: Response ) => {
     console.log(req.body)
     console.log("recibido.IA")
-    let {personas} = req.body
+    let {personas, idVagon, idTren} = req.body
     console.log(personas)
-    const dbResult = await prisma.conexiones.update({
+    const dbResult = await prisma.vagon.update({
         where: {
-            id: 1,
+            id: idVagon,
           },
           data: {
               personas: personas,
@@ -58,7 +58,7 @@ app.post('/IA', async(req: Request, res: Response ) => {
 })
 
 app.get('/IAdatos', async (req: Request, res: Response) =>{
-    const dbResult = await prisma.conexiones.findMany(); 
+    const dbResult = await prisma.vagon.findMany(); 
     res.header('Access-Control-Allow-Origin', '*');
     console.log(dbResult)
     res.json({message: "hola thiago", data: dbResult})

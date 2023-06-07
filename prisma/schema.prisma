@@ -8,9 +8,50 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Conexiones {
-  id  Int @unique @default(autoincrement())
-  personas Int
+// model Conexiones {
+//   id  Int @unique @default(autoincrement())
+//   personas Int
+//   temp Int
+// }
+
+model Tren {
+  id Int @unique @default(autoincrement())
+  estacion Estacion @relation(fields: [idEstActual], references: [id])
+  linea Linea @relation(fields: [idLinea], references: [id])
+  idLinea Int
+  idEstActual Int @unique 
+  vagon Vagon []
+
+  @@index([idLinea], name: "idLinea")
+}
+
+model Estacion {
+  id Int @unique @default(autoincrement())
+  nombre String
+  terminal String
+  orden Int
+  linea Linea @relation(fields: [idLinea], references: [id])
+  idLinea Int 
+  tren Tren?
+
+  @@index([idLinea], name: "idLinea")
+}
+
+model Linea {
+  id Int @unique @default(autoincrement())
+  letra String
+  estacion Estacion[]
+  tren Tren[]
+}
+
+model Vagon {
+  id Int @unique @default(autoincrement())
+  personas String
   temp Int
+  hum Int
+  tren Tren @relation(fields: [idTren], references: [id])
+  idTren Int
+  
+  @@index([idTren], name: "idTren")
 }
 
