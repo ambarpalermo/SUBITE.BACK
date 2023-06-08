@@ -32,7 +32,7 @@ app.post('/hard', async(req: Request, res: Response) => {
     console.log(temp)
     const dbResult = await prisma.vagon.update({
         where: {
-            id: 1,
+            id: idVagon,
           },
           data: {
               temp: temp
@@ -57,6 +57,12 @@ app.post('/IA', async(req: Request, res: Response ) => {
     res.json({message: "hola juana"})
 })
 
+app.post('/datos', (req: Request, res: Response) =>{
+    console.log(req.body)
+    let {linea, estacion, terminal} = req.body
+    
+})
+
 app.get('/IAdatos', async (req: Request, res: Response) =>{
     const dbResult = await prisma.vagon.findMany(); 
     res.header('Access-Control-Allow-Origin', '*');
@@ -73,3 +79,17 @@ app.get('/IAdatos', (req, res) =>{
 app.listen(5000, () => {
     console.log('Server on port 5000');
 });
+
+//crear base de datos
+
+const estaciones = ["PlazaDeMayo", "Peru", "Lima", "Alfonsin", "PlazaMiserere", "Loria", "CastroBarros", "Acoyte", "PrimeraJunta", "Puan", "Carabobo", "SanJoseDeFlores", "SanPedrito"]
+
+// for (const est in estaciones){
+//     const dbResult = prisma.estacion.create({
+//         data: {
+//           nombre: est,
+//           terminal: "PlazaDeMayo"
+//         }
+//       })
+
+// }
