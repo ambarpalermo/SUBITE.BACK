@@ -64,15 +64,26 @@ app.post('/datos', (req: Request, res: Response) =>{
 })
 
 app.get('/IAdatos', async (req: Request, res: Response) =>{
-    const dbResult = await prisma.vagon.findMany(); 
+    const dbResult = await prisma.vagon.findMany({
+        where: {
+            idTren: 1 
+        }
+    }); 
     res.header('Access-Control-Allow-Origin', '*');
     console.log(dbResult)
-    res.json({message: "hola thiago", data: dbResult})
+    res.json(dbResult)
 })
 
-app.get('/IAdatos', (req, res) =>{
-    //con.query select datos para thiago
+app.post("/estaciones/:linea", async (req: Request, res: Response) => {
+    const idlinea = req.body
+    const dbResult = await prisma.estacion.findMany({
+        where: {
+            idLinea: idlinea
+        }
+    });
+    console.log(dbResult)
 })
+
 
 //config-----------------------------------------------------------------------------------
 
@@ -82,14 +93,21 @@ app.listen(5000, () => {
 
 //crear base de datos
 
-const estaciones = ["PlazaDeMayo", "Peru", "Lima", "Alfonsin", "PlazaMiserere", "Loria", "CastroBarros", "Acoyte", "PrimeraJunta", "Puan", "Carabobo", "SanJoseDeFlores", "SanPedrito"]
+// const estaciones = ["Hospitales", "ParquePatricios", "Caseros", "Inclan", "Humberto", "Venezuela", "Once", "Corrientes", "Cordoba", "SantaFe", "LasHeras", "FacultadDeDerecho"]
 
-// for (const est in estaciones){
-//     const dbResult = prisma.estacion.create({
-//         data: {
-//           nombre: est,
-//           terminal: "PlazaDeMayo"
-//         }
-//       })
+// const terminales = ["Hospitales", "FacultadDeDerecho"]
 
-// }
+// estaciones.map(async (est, index) => {
+//     terminales.map(async (ter, index2) => {
+//         await prisma.estacion.create({
+//             data: {
+//                 nombre: est,
+//                 terminal: ter,
+//                 orden: index,
+//                 idLinea: 6,
+//              }
+//          })
+//      })
+//  }) 
+
+
