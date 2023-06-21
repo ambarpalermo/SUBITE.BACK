@@ -16,11 +16,11 @@ datasource db {
 
 model Tren {
   id Int @unique @default(autoincrement())
-  //estacion Estacion @relation(fields: [idEstActual], references: [id])
-  //linea Linea @relation(fields: [idLinea], references: [id])
+  estacion Estacion @relation(fields: [idEstActual], references: [id])
+  linea Linea @relation(fields: [idLinea], references: [id])
   idLinea Int
   idEstActual Int @unique 
-  //vagon Vagon []
+  vagon Vagon []
 
   @@index([idLinea], name: "idLinea")
 }
@@ -30,9 +30,9 @@ model Estacion {
   nombre String
   terminal String
   orden Int
-  //linea Linea @relation(fields: [idLinea], references: [id])
+  linea Linea @relation(fields: [idLinea], references: [id])
   idLinea Int 
-  //tren Tren?
+  tren Tren?
 
   @@index([idLinea], name: "idLinea")
 }
@@ -40,8 +40,8 @@ model Estacion {
 model Linea {
   id Int @unique @default(autoincrement())
   letra String
-  //estacion Estacion[]
-  //tren Tren[]
+  estacion Estacion[]
+  tren Tren[]
 }
 
 model Vagon {
@@ -49,7 +49,7 @@ model Vagon {
   personas String
   temp Int
   hum Int
-  //tren Tren @relation(fields: [idTren], references: [id])
+  tren Tren @relation(fields: [idTren], references: [id])
   idTren Int
 
   @@index([idTren], name: "idTren")
