@@ -1,7 +1,8 @@
 import express, { RequestHandler } from "express"
 import { Request, Response } from "express";
-import {prisma} from "./database/db.ts";
+import { prisma } from "./database/db.ts";
 import cors from "cors";
+import { Linea } from "@prisma/client";
 
 //console.log(prisma);
 
@@ -25,60 +26,60 @@ app.use(logger);
 
 //SETUP ---------------------------------------------------------------------------------------------
 
-app.post('/hard', async(req: Request, res: Response) => {
+app.post('/hard', async (req: Request, res: Response) => {
     console.log(req.body)
     console.log("recibido.hard")
-    let {temp, idVagon, idTren} = req.body
+    let { temp, idVagon, idTren } = req.body
     console.log(temp)
     const dbResult = await prisma.vagon.update({
         where: {
             id: idVagon,
-          },
-          data: {
-              temp: temp
-          }
+        },
+        data: {
+            temp: temp
+        }
     })
-    res.json({message: "hola kuki"})
+    res.json({ message: "hola kuki" })
 })
 
-app.post('/IA', async(req: Request, res: Response ) => {
+app.post('/IA', async (req: Request, res: Response) => {
     console.log(req.body)
     console.log("recibido.IA")
-    let {personas, idVagon, idTren} = req.body
+    let { personas, idVagon, idTren } = req.body
     console.log(personas)
     const dbResult = await prisma.vagon.update({
         where: {
             id: idVagon,
-          },
-          data: {
-              personas: personas,
-          },
+        },
+        data: {
+            personas: personas,
+        },
     })
-    res.json({message: "hola juana"})
+    res.json({ message: "hola juana" })
 })
 
-app.post('/datos', (req: Request, res: Response) =>{
-    console.log(req.body)
-    let {linea, estacion, terminal} = req.body
-    
-})
 
-app.get('/IAdatos', async (req: Request, res: Response) =>{
+app.get('/IAdatos', async (req: Request, res: Response) => {
     const dbResult = await prisma.vagon.findMany({
         where: {
-            idTren: 1 
+            idTren: 1
         }
-    }); 
+    });
     res.header('Access-Control-Allow-Origin', '*');
     console.log(dbResult)
     res.json(dbResult)
 })
 
-app.post("/estaciones/:linea", async (req: Request, res: Response) => {
-    const idlinea = req.body
+app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
+    const nomLinea = req.params.id
+    const linea = await prisma.linea.findFirst({
+        where: {
+            letra: nomLinea
+        }
+    });
     const dbResult = await prisma.estacion.findMany({
         where: {
-            idLinea: idlinea
+            idLinea: linea?.id
         }
     });
     console.log(dbResult)
@@ -110,4 +111,42 @@ app.listen(5000, () => {
 //      })
 //  }) 
 
+//crear el update de estacion actual
+// const condicion = true
+// const A = ["Ambar, Manu", "fkemfk", "sjdcnns", "jhsbdchba"]
 
+// while (condicion == true){
+//     setTimeout(() =>{
+//         A.map(async (_, index) => {
+//             const Tren1 = A[index % A.length] 
+//             const Tren2 = A[(index + 2) % A.length]
+//             const Tren3 = A[(index + 4) % A.length]
+//             const dbResult = await prisma.tren.update({
+//                 where: {
+//                    id: 1
+//                 },
+//                 data: {
+//                     idEstActual: index % A.length
+//                 },
+//             })
+//             const dbResult1 = await prisma.tren.update({
+//                 where: {
+//                    id: 2
+//                 },
+//                 data: {
+//                     idEstActual: (index + 2) % A.length
+//                 },
+//             })
+//             const dbResult2 = await prisma.tren.update({
+//                 where: {
+//                    id: 3
+//                 },
+//                 data: {
+//                     idEstActual: (index + 4) % A.length
+//                 },
+//             })
+//             index ++
+//         })
+
+//     }, 30000)
+// };
