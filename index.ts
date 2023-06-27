@@ -83,14 +83,14 @@ app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
         }
     });
     const terminales = dbResult.map((item,index) =>{
-        console.log(item)
         const terminal1 = item.orden === 0 ? item.nombre : null
-        const terminal2 = item.orden === Math.ceil(dbResult.length / 2) ? item.nombre : null
+        const terminal2 = item.orden === Math.ceil(dbResult.length / 2 - 1) ? item.nombre : null
+        Math.ceil(dbResult.length / 2)
         const arr = [terminal1, terminal2] 
         return arr 
     })
-    console.log(dbResult)
     res.json(dbResult)
+    console.log(Math.ceil(dbResult.length / 2))
     console.log(terminales)
     res.json(terminales)
 })
