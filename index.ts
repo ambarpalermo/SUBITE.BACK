@@ -2,18 +2,17 @@ import express, { RequestHandler } from "express"
 import { Request, Response } from "express";
 import { prisma } from "./database/db.ts";
 import cors from "cors";
-import { Linea } from "@prisma/client";
 
 //console.log(prisma);
 
 const app = express();
 app.use(cors());
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    next();
-});
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//     next();
+// });
 
 const logger: RequestHandler = (req, res, next) => {
     console.log(`Route Recieved: ${req.protocol}://${req.get('host')}${req.originalUrl}`);
@@ -65,9 +64,9 @@ app.get('/IAdatos', async (req: Request, res: Response) => {
             idTren: 1
         }
     });
-    res.header('Access-Control-Allow-Origin', '*');
     console.log(dbResult)
     res.json(dbResult)
+    //res.header('Access-Control-Allow-Origin', '*');
 })
 
 app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
@@ -89,10 +88,11 @@ app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
         const arr = [terminal1, terminal2] 
         return arr 
     })
-    res.json(dbResult)
+    
     console.log(Math.ceil(dbResult.length / 2))
     console.log(terminales)
-    res.json(terminales)
+    res.json({terminales: terminales, result: dbResult})
+    //res.header('Access-Control-Allow-Origin', '*');
 })
 
 
