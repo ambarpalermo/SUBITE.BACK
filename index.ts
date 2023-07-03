@@ -104,6 +104,7 @@ app.listen(5000, () => {
     console.log('Server on port 5000');
 });
 
+
 //crear base de datos
 
 // const estaciones = ["Hospitales", "ParquePatricios", "Caseros", "Inclan", "Humberto", "Venezuela", "Once", "Corrientes", "Cordoba", "SantaFe", "LasHeras", "FacultadDeDerecho"]
@@ -124,41 +125,45 @@ app.listen(5000, () => {
 //  }) 
 
 //crear el update de estacion actual
-// const condicion = true
-// const A = ["Ambar, Manu", "fkemfk", "sjdcnns", "jhsbdchba"]
 
-// while (condicion == true){
-//     setTimeout(() =>{
-//         A.map(async (_, index) => {
-//             const Tren1 = A[index % A.length] 
-//             const Tren2 = A[(index + 2) % A.length]
-//             const Tren3 = A[(index + 4) % A.length]
-//             const dbResult = await prisma.tren.update({
-//                 where: {
-//                    id: 1
-//                 },
-//                 data: {
-//                     idEstActual: index % A.length
-//                 },
-//             })
-//             const dbResult1 = await prisma.tren.update({
-//                 where: {
-//                    id: 2
-//                 },
-//                 data: {
-//                     idEstActual: (index + 2) % A.length
-//                 },
-//             })
-//             const dbResult2 = await prisma.tren.update({
-//                 where: {
-//                    id: 3
-//                 },
-//                 data: {
-//                     idEstActual: (index + 4) % A.length
-//                 },
-//             })
-//             index ++
-//         })
 
-//     }, 30000)
-// };
+const A = ["PlazaDeMayo", "Peru", "Piedras", "SaezPeña", "Congreso", "Pasco", "Alberti", "PlazaMiserere", "Loria", "CastroBarros", "RioDeJaneiro", "Acoyte", "PrimeraJunta", "Carabobo", "Flores", "SanPedrito"]
+
+var lugar = 0
+setInterval(() => {
+    console.log("entre")
+        const Tren1 = A[lugar % A.length] 
+        const Tren2 = A[(lugar + 2) % A.length]
+        const Tren3 = A[(lugar + 4) % A.length]
+        console.log(lugar % A.length)
+        
+        // const dbResult = await prisma.tren.update({
+        //     where: {
+        //         id: 1
+        //     },
+        //     data: {
+        //         idEstActual: index % A.length
+        //     },
+        // })
+        // const dbResult1 = await prisma.tren.update({
+        //     where: {
+        //         id: 2
+        //     },
+        //     data: {
+        //         idEstActual: (index + 2) % A.length
+        //     },
+        // })
+        // const dbResult2 = await prisma.tren.update({
+        //     where: {
+        //         id: 3
+        //     },
+        //     data: {
+        //         idEstActual: (index + 4) % A.length
+        //     },
+        // })
+        lugar ++
+        10000})
+ ;
+
+
+
