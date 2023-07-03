@@ -129,41 +129,40 @@ app.listen(5000, () => {
 
 const A = ["PlazaDeMayo", "Peru", "Piedras", "SaezPeña", "Congreso", "Pasco", "Alberti", "PlazaMiserere", "Loria", "CastroBarros", "RioDeJaneiro", "Acoyte", "PrimeraJunta", "Carabobo", "Flores", "SanPedrito"]
 
-var lugar = 0
-setInterval(() => {
+let lugar = 0
+setInterval(async() => {
     console.log("entre")
         const Tren1 = A[lugar % A.length] 
         const Tren2 = A[(lugar + 2) % A.length]
         const Tren3 = A[(lugar + 4) % A.length]
-        console.log(lugar % A.length)
-        
-        // const dbResult = await prisma.tren.update({
-        //     where: {
-        //         id: 1
-        //     },
-        //     data: {
-        //         idEstActual: index % A.length
-        //     },
-        // })
-        // const dbResult1 = await prisma.tren.update({
-        //     where: {
-        //         id: 2
-        //     },
-        //     data: {
-        //         idEstActual: (index + 2) % A.length
-        //     },
-        // })
-        // const dbResult2 = await prisma.tren.update({
-        //     where: {
-        //         id: 3
-        //     },
-        //     data: {
-        //         idEstActual: (index + 4) % A.length
-        //     },
-        // })
-        lugar ++
-        10000})
- ;
 
-
-
+        const dbResult = await prisma.tren.update({
+            where: {
+                id: 100
+            },
+            data: {
+                idEstActual: lugar % A.length
+            },
+        })
+        console.log(dbResult)
+        const dbResult1 = await prisma.tren.update({
+            where: {
+                id: 101
+            },
+            data: {
+                idEstActual: (lugar + 2) % A.length
+            },
+        })
+        console.log(dbResult1)
+        const dbResult2 = await prisma.tren.update({
+            where: {
+                id: 102
+            },
+            data: {
+                idEstActual: (lugar + 4) % A.length
+            },
+        })
+        console.log(dbResult2)
+        lugar += 1
+    }, 
+    10000);
