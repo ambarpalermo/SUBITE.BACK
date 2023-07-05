@@ -19,7 +19,7 @@ model Tren {
   estacion Estacion @relation(fields: [idEstActual], references: [id])
   linea Linea @relation(fields: [idLinea], references: [id])
   idLinea Int
-  idEstActual Int @unique 
+  idEstActual Int  
   vagon Vagon []
 
   @@index([idLinea], name: "idLinea")
@@ -32,7 +32,7 @@ model Estacion {
   orden Int
   linea Linea @relation(fields: [idLinea], references: [id])
   idLinea Int 
-  tren Tren?
+  tren Tren []
 
   @@index([idLinea], name: "idLinea")
 }

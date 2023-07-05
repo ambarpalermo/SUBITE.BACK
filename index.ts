@@ -19,6 +19,32 @@ const logger: RequestHandler = (req, res, next) => {
     next();
 }
 
+const lineasColor = [
+    {
+        id: "A",
+        color: "#24b4bfff"        
+    },
+    {
+        id: "B",
+        color: "#bf2424ff" 
+    },
+    {
+        id: "C",
+        color: "#084e64ff" 
+    },
+    {
+        id: "D",
+        color: "#086432ff" 
+    },
+    {
+        id: "E",
+        color: "#4c0457ff" 
+    },
+    {
+        id: "H",
+        color: "#c8b727ff" 
+    }
+]
 
 app.use(express.json());
 app.use(logger);
@@ -88,10 +114,14 @@ app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
         const arr = [terminal1, terminal2] 
         return arr 
     })
-    
-    console.log(Math.ceil(dbResult.length / 2))
-    console.log(terminales)
-    res.json({terminales: terminales, result: dbResult})
+    const lineaFound = lineasColor.find((letter) => letter.id === nomLinea)
+    if(lineaFound){
+        const color = lineaFound.color
+        console.log(color)
+        console.log(Math.ceil(dbResult.length / 2))
+        console.log(terminales)
+        res.json({terminales: terminales, result: dbResult, color: color})
+    } 
     //res.header('Access-Control-Allow-Origin', '*');
 })
 
@@ -144,7 +174,7 @@ setInterval(async() => {
                 idEstActual: lugar % A.length
             },
         })
-        console.log(dbResult)
+        
         const dbResult1 = await prisma.tren.update({
             where: {
                 id: 101
@@ -153,7 +183,7 @@ setInterval(async() => {
                 idEstActual: (lugar + 2) % A.length
             },
         })
-        console.log(dbResult1)
+        
         const dbResult2 = await prisma.tren.update({
             where: {
                 id: 102
@@ -162,7 +192,6 @@ setInterval(async() => {
                 idEstActual: (lugar + 4) % A.length
             },
         })
-        console.log(dbResult2)
         lugar += 1
     }, 
     10000);
