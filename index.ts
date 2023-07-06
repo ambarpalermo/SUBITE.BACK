@@ -3,16 +3,8 @@ import { Request, Response } from "express";
 import { prisma } from "./database/db.ts";
 import cors from "cors";
 
-//console.log(prisma);
-
 const app = express();
 app.use(cors());
-
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//     next();
-// });
 
 const logger: RequestHandler = (req, res, next) => {
     console.log(`Route Recieved: ${req.protocol}://${req.get('host')}${req.originalUrl}`);
@@ -92,7 +84,6 @@ app.get('/IAdatos', async (req: Request, res: Response) => {
     });
     console.log(dbResult)
     res.json(dbResult)
-    //res.header('Access-Control-Allow-Origin', '*');
 })
 
 app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
@@ -122,11 +113,7 @@ app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
         console.log(terminales)
         res.json({terminales: terminales, result: dbResult, color: color})
     } 
-    //res.header('Access-Control-Allow-Origin', '*');
 })
-
-
-
 
 //config-----------------------------------------------------------------------------------
 
@@ -134,8 +121,7 @@ app.listen(5000, () => {
     console.log('Server on port 5000');
 });
 
-
-//crear base de datos
+//creacion de base de datos
 
 // const estaciones = ["Hospitales", "ParquePatricios", "Caseros", "Inclan", "Humberto", "Venezuela", "Once", "Corrientes", "Cordoba", "SantaFe", "LasHeras", "FacultadDeDerecho"]
 
@@ -154,8 +140,7 @@ app.listen(5000, () => {
 //      })
 //  }) 
 
-//crear el update de estacion actual
-
+//creacion del update de la estacion actual
 
 const A = ["PlazaDeMayo", "Peru", "Piedras", "SaezPeña", "Congreso", "Pasco", "Alberti", "PlazaMiserere", "Loria", "CastroBarros", "RioDeJaneiro", "Acoyte", "PrimeraJunta", "Carabobo", "Flores", "SanPedrito"]
 
