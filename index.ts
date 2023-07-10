@@ -98,6 +98,11 @@ app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
             idLinea: linea?.id
         }
     });
+    const arr = dbResult.map((item,index) => {
+        dbResult.sort(function(a, b) {
+            return a.orden - b.orden;
+        });
+    });
     const terminales = dbResult.map((item,index) =>{
         const terminal1 = item.orden === 0 ? item.nombre : null
         const terminal2 = item.orden === Math.ceil(dbResult.length / 2 - 1) ? item.nombre : null
@@ -113,6 +118,46 @@ app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
         console.log(terminales)
         res.json({terminales: terminales, result: dbResult, color: color})
     } 
+})
+
+app.post('/datos', async (req: Request, res: Response) => {
+    let { NomLinea, Estacion, Terminal } = req.body
+    console.log(req.body)
+    const linea = await prisma.linea.findFirst({
+        where: {
+            letra: NomLinea
+        }
+    });
+    const dbResult = await prisma.estacion.findMany({
+        where: {
+            idLinea: linea?.id,
+            terminal: Terminal
+        }
+    });
+    //el sort ordena el array, fijandose el el orden de A menos el orden de B y asi se fija cual va primero segun el resultado
+    const arrEstacionesOrdenadas = [] as string[]
+    dbResult.sort(function(a, b) {
+        return a.orden - b.orden;
+        });
+        
+        // Recorrer el array ordenado y agregar los nombres al nuevo array
+        dbResult.map((_,index) =>{
+        if(dbResult.length > index) arrEstacionesOrdenadas.push(dbResult[index].nombre)
+        })
+    console.log(arrEstacionesOrdenadas)
+
+    const corte = arrEstacionesOrdenadas.indexOf(Estacion)
+
+    if (arrEstacionesOrdenadas.indexOf(Terminal) === 0) {
+        const ests = arrEstacionesOrdenadas.slice(corte + 1, arrEstacionesOrdenadas.length)
+        console.log(ests)
+    } 
+    //el reverse te da vuelta el orden para que sea de la estacion del usuario para atras
+    else {
+        const ests = arrEstacionesOrdenadas.slice(0, corte + 1).reverse()
+        console.log(ests)
+    }
+    
 })
 
 //config-----------------------------------------------------------------------------------
