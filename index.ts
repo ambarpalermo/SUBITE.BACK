@@ -37,6 +37,36 @@ const lineasColor = [
         color: "#c8b727ff" 
     }
 ]
+interface EstacionesProps {
+    id: number
+    nombre: string
+    orden: string
+} 
+
+function InfoTren (ests: EstacionesProps[]){
+    console.log(ests)
+    ests.map(async (estacion) => {
+        const estacionValida = await prisma.tren.findFirst({
+            where: {
+                idEstActual: estacion.id
+            }
+        })
+        console.log("estacion valida: ", estacionValida)
+
+        if(estacionValida){
+            console.log("hay estacion")
+            let infoVagones = await prisma.vagon.findFirst({
+                where: {
+                    idTren: estacionValida.id
+                }
+            })
+            //console.log(infoVagones)
+            return infoVagones
+        }
+    })
+
+    return "nada"
+}
 
 app.use(express.json());
 app.use(logger);
@@ -135,29 +165,35 @@ app.post('/datos', async (req: Request, res: Response) => {
         }
     });
     //el sort ordena el array, fijandose el el orden de A menos el orden de B y asi se fija cual va primero segun el resultado
-    const arrEstacionesOrdenadas = [] as string[]
+
+    const arrEstacionesOrdenadas = [] as EstacionesProps[]
+
     dbResult.sort(function(a, b) {
         return a.orden - b.orden;
         });
         
         // Recorrer el array ordenado y agregar los nombres al nuevo array
         dbResult.map((_,index) =>{
-        if(dbResult.length > index) arrEstacionesOrdenadas.push(dbResult[index].nombre)
+        if(dbResult.length > index) arrEstacionesOrdenadas.push({id:dbResult[index].id, nombre: dbResult[index].nombre, orden: dbResult[index].orden.toString()})
         })
-    console.log(arrEstacionesOrdenadas)
 
-    const corte = arrEstacionesOrdenadas.indexOf(Estacion)
+    const corte = arrEstacionesOrdenadas.find((item) => item.nombre === Estacion)
+
+    const corteIndex = arrEstacionesOrdenadas.indexOf(corte!);
 
     if (arrEstacionesOrdenadas.indexOf(Terminal) === 0) {
-        const ests = arrEstacionesOrdenadas.slice(corte + 1, arrEstacionesOrdenadas.length)
-        console.log(ests)
+        const ests = arrEstacionesOrdenadas.slice(corteIndex + 1, arrEstacionesOrdenadas.length)
+        const INFO = InfoTren(ests);
+        console.log(INFO)
     } 
     //el reverse te da vuelta el orden para que sea de la estacion del usuario para atras
     else {
-        const ests = arrEstacionesOrdenadas.slice(0, corte + 1).reverse()
-        console.log(ests)
+        const ests = arrEstacionesOrdenadas.slice(0, corteIndex + 1).reverse()
+        const INFO = InfoTren(ests);
+        console.log(INFO)
     }
     
+
 })
 
 //config-----------------------------------------------------------------------------------
@@ -196,32 +232,69 @@ setInterval(async() => {
         const Tren2 = A[(lugar + 2) % A.length]
         const Tren3 = A[(lugar + 4) % A.length]
 
-        const dbResult = await prisma.tren.update({
+        const dbConsult1 = await prisma.estacion.findMany({
             where: {
-                id: 100
-            },
-            data: {
-                idEstActual: lugar % A.length
-            },
+                idLinea: 1,
+                orden: (lugar % A.length)
+            }
         })
-        
+
+        const idEstacion = dbConsult1.map((est,index) =>{
+            const IDestacion = est.id
+            return IDestacion
+        });
+
         const dbResult1 = await prisma.tren.update({
             where: {
-                id: 101
+                id: 1
             },
             data: {
-                idEstActual: (lugar + 2) % A.length
-            },
+                idEstActual: idEstacion[0]
+            }
         })
-        
+//--------------------------------------------------------------------------------------------
+        const dbConsult2 = await prisma.estacion.findMany({
+            where: {
+                idLinea: 1,
+                orden: (lugar + 2) % A.length
+            }
+        })
+
+        const idEstacion2 = dbConsult2.map((est,index) =>{
+            const IDestacion = est.id
+            return IDestacion
+        });
+
         const dbResult2 = await prisma.tren.update({
             where: {
-                id: 102
+                id: 2
             },
             data: {
-                idEstActual: (lugar + 4) % A.length
-            },
+                idEstActual: idEstacion2[0]
+            }
         })
+//--------------------------------------------------------------------------------------------
+        const dbConsult3 = await prisma.estacion.findMany({
+            where: {
+                idLinea: 1,
+                orden: (lugar + 4) % A.length
+            }
+        })
+
+        const idEstacion3 = dbConsult3.map((est,index) =>{
+            const IDestacion = est.id
+            return IDestacion
+        });
+
+        const dbResult3 = await prisma.tren.update({
+            where: {
+                id: 3
+            },
+            data: {
+                idEstActual: idEstacion3[0]
+            }
+        })
+        
         lugar += 1
     }, 
     10000);
