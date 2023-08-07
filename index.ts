@@ -201,6 +201,8 @@ app.post("/datos", async (req: Request, res: Response) => {
 
   const corteIndex = arrEstacionesOrdenadas.indexOf(corte!);
 
+  const respuestaTren = [] as Vagon | []
+
   if (arrEstacionesOrdenadas.indexOf(Terminal) === 0) {
     const ests = arrEstacionesOrdenadas.slice(
       corteIndex + 1,
@@ -210,6 +212,7 @@ app.post("/datos", async (req: Request, res: Response) => {
     const filteredTren = INFO.filter((tren) => tren !== undefined)
 
     const filteredVagonesTren = filteredTren.map((tren) => {
+      const respuestaTren = tren.vagon
       return tren.vagon
     })
 
@@ -223,11 +226,13 @@ app.post("/datos", async (req: Request, res: Response) => {
     const filteredTren = INFO.filter((tren) => tren !== undefined)
 
     const filteredVagonesTren = filteredTren.map((tren) => {
+      const respuestaTren = tren.vagon
       return tren.vagon
     })
     //console.log("Tren filtrado:) ", filteredTren)
     console.log(filteredVagonesTren)
   }
+  return res.json(respuestaTren)
 });
 
 //config-----------------------------------------------------------------------------------
