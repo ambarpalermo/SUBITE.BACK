@@ -46,28 +46,41 @@ interface EstacionesProps {
   orden: string;
 }
 
+interface TrenProps {
+  id: number
+  idLinea: number
+  idEstActual: number
+  vagon: {
+    id: number
+    personas: string
+    temp: number
+    hum: number
+    idTren: number
+  }[]
+}
+
 async function TrenMasCercano(ests: EstacionesProps[]) {
-  console.log(ests);
+  //console.log(ests);
   const TodosLosTrenes = await prisma.tren.findMany({
     include: {
       vagon: true,
     },
   });
-  console.log(TodosLosTrenes)
+  //console.log(TodosLosTrenes)
 
   let tren: Tren & { vagon: Vagon[]; } | undefined;
 
-  ests.map(async (estacion) => {
-      console.log("Buscando tren en la estacion: " + estacion.id);
+  const vagonesTren = ests.map((estacion) => {
+      //console.log("Buscando tren en la estacion: " + estacion.id);
       
       tren = TodosLosTrenes.find((t) => {
       return estacion.id === t.idEstActual;
       });
       
-      if(!tren) console.log("AAAAAAAAAAAAA");
-      return tren;
+      if(!tren) console.log("no se encontro");
+      return tren as TrenProps
   });
-  return tren;
+  return vagonesTren;
 }
 
 app.use(express.json());
@@ -194,13 +207,26 @@ app.post("/datos", async (req: Request, res: Response) => {
       arrEstacionesOrdenadas.length
     );
     const INFO = await TrenMasCercano(ests);
-    console.log(INFO);
+    const filteredTren = INFO.filter((tren) => tren !== undefined)
+
+    const filteredVagonesTren = filteredTren.map((tren) => {
+      return tren.vagon
+    })
+
+    //console.log("Tren filtrado:) ", filteredTren)
+    console.log(filteredVagonesTren)
   }
   //el reverse te da vuelta el orden para que sea de la estacion del usuario para atras
   else {
     const ests = arrEstacionesOrdenadas.slice(0, corteIndex + 1).reverse();
     const INFO = await TrenMasCercano(ests);
-    console.log(INFO);
+    const filteredTren = INFO.filter((tren) => tren !== undefined)
+
+    const filteredVagonesTren = filteredTren.map((tren) => {
+      return tren.vagon
+    })
+    //console.log("Tren filtrado:) ", filteredTren)
+    console.log(filteredVagonesTren)
   }
 });
 
