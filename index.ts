@@ -262,6 +262,17 @@ app.listen(5000, () => {
 
 //creacion del update de la estacion actual
 
+// app.get("/tren", async (req: Request, res: Response) => {
+//   const dbResult = await prisma.tren.create({
+//     data: {
+//       id: 6,
+//       idLinea: 1,
+//       idEstActual: 0
+//     },
+//   });
+// })
+
+
 const A = [
   "PlazaDeMayo",
   "Peru",
@@ -287,6 +298,9 @@ setInterval(async () => {
   const Tren1 = A[lugar % A.length];
   const Tren2 = A[(lugar + 2) % A.length];
   const Tren3 = A[(lugar + 4) % A.length];
+  const Tren4 = A[(lugar + 6) % A.length];
+  const Tren5 = A[(lugar + 8) % A.length];
+  const Tren6 = A[(lugar + 10) % A.length];
 
   const dbConsult1 = await prisma.estacion.findMany({
     where: {
@@ -348,6 +362,69 @@ setInterval(async () => {
     },
     data: {
       idEstActual: idEstacion3[0],
+    },
+  });
+  //---------------------------------------------------------------------------------------
+  const dbConsult4 = await prisma.estacion.findMany({
+    where: {
+      idLinea: 1,
+      orden: (lugar + 6) % A.length,
+    },
+  });
+
+  const idEstacion4 = dbConsult4.map((est, index) => {
+    const IDestacion = est.id;
+    return IDestacion;
+  });
+
+  const dbResult4 = await prisma.tren.update({
+    where: {
+      id: 4,
+    },
+    data: {
+      idEstActual: idEstacion4[0],
+    },
+  });
+ //------------------------------------------------------------------------------------------------
+ const dbConsult5 = await prisma.estacion.findMany({
+  where: {
+    idLinea: 1,
+    orden: (lugar + 8) % A.length,
+  },
+  });
+
+  const idEstacion5 = dbConsult5.map((est, index) => {
+    const IDestacion = est.id;
+    return IDestacion;
+  });
+
+  const dbResult5 = await prisma.tren.update({
+    where: {
+      id: 5,
+    },
+    data: {
+      idEstActual: idEstacion5[0],
+    },
+  });
+ //------------------------------------------------------------------------------------------------
+ const dbConsult6 = await prisma.estacion.findMany({
+  where: {
+    idLinea: 1,
+    orden: (lugar + 10) % A.length,
+  },
+  });
+
+  const idEstacion6 = dbConsult6.map((est, index) => {
+    const IDestacion = est.id;
+    return IDestacion;
+  });
+
+  const dbResult6 = await prisma.tren.update({
+    where: {
+      id: 6,
+    },
+    data: {
+      idEstActual: idEstacion6[0],
     },
   });
 
