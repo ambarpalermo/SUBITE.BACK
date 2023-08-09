@@ -47,16 +47,16 @@ interface EstacionesProps {
 }
 
 interface TrenProps {
-  id: number
-  idLinea: number
-  idEstActual: number
+  id: number;
+  idLinea: number;
+  idEstActual: number;
   vagon: {
-    id: number
-    personas: string
-    temp: number
-    hum: number
-    idTren: number
-  }[]
+    id: number;
+    personas: string;
+    temp: number;
+    hum: number;
+    idTren: number;
+  }[];
 }
 
 async function TrenMasCercano(ests: EstacionesProps[]) {
@@ -68,17 +68,17 @@ async function TrenMasCercano(ests: EstacionesProps[]) {
   });
   //console.log(TodosLosTrenes)
 
-  let tren: Tren & { vagon: Vagon[]; } | undefined;
+  let tren: (Tren & { vagon: Vagon[] }) | undefined;
 
   const vagonesTren = ests.map((estacion) => {
-      //console.log("Buscando tren en la estacion: " + estacion.id);
-      
-      tren = TodosLosTrenes.find((t) => {
+    //console.log("Buscando tren en la estacion: " + estacion.id);
+
+    tren = TodosLosTrenes.find((t) => {
       return estacion.id === t.idEstActual;
-      });
-      
-      if(!tren) console.log("no se encontro");
-      return tren as TrenProps
+    });
+
+    if (!tren) console.log("no se encontro");
+    return tren as TrenProps;
   });
   return vagonesTren;
 }
@@ -201,7 +201,7 @@ app.post("/datos", async (req: Request, res: Response) => {
 
   const corteIndex = arrEstacionesOrdenadas.indexOf(corte!);
 
-  const respuestaTren = [] as Vagon | []
+  let respuestaTren = [] as Vagon[][];
 
   if (arrEstacionesOrdenadas.indexOf(Terminal) === 0) {
     const ests = arrEstacionesOrdenadas.slice(
@@ -209,30 +209,30 @@ app.post("/datos", async (req: Request, res: Response) => {
       arrEstacionesOrdenadas.length
     );
     const INFO = await TrenMasCercano(ests);
-    const filteredTren = INFO.filter((tren) => tren !== undefined)
+    const filteredTren = INFO.filter((tren) => tren !== undefined);
 
     const filteredVagonesTren = filteredTren.map((tren) => {
-      const respuestaTren = tren.vagon
-      return tren.vagon
-    })
+      return tren.vagon;
+    });
 
     //console.log("Tren filtrado:) ", filteredTren)
-    console.log(filteredVagonesTren)
+    console.log(filteredVagonesTren);
+    respuestaTren = filteredVagonesTren;
   }
   //el reverse te da vuelta el orden para que sea de la estacion del usuario para atras
   else {
     const ests = arrEstacionesOrdenadas.slice(0, corteIndex + 1).reverse();
     const INFO = await TrenMasCercano(ests);
-    const filteredTren = INFO.filter((tren) => tren !== undefined)
+    const filteredTren = INFO.filter((tren) => tren !== undefined);
 
     const filteredVagonesTren = filteredTren.map((tren) => {
-      const respuestaTren = tren.vagon
-      return tren.vagon
-    })
+      return tren.vagon;
+    });
     //console.log("Tren filtrado:) ", filteredTren)
-    console.log(filteredVagonesTren)
+    console.log(filteredVagonesTren);
+    respuestaTren = filteredVagonesTren;
   }
-  return res.json(respuestaTren)
+  return res.json(respuestaTren);
 });
 
 //config-----------------------------------------------------------------------------------
