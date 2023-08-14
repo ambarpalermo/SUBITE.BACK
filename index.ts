@@ -241,6 +241,17 @@ app.listen(5000, () => {
   console.log("Server on port 5000");
 });
 
+// app.get("/vagon", async (req: Request, res: Response) =>{
+//   const dbResult = await prisma.vagon.create({
+//     data: {
+//       id: 36,
+//       personas: "yellow",
+//       temp: 22,
+//       hum: 38,
+//       idTren: 6
+//     }
+//   });
+// }); 
 //creacion de base de datos
 
 // const estaciones = ["Hospitales", "ParquePatricios", "Caseros", "Inclan", "Humberto", "Venezuela", "Once", "Corrientes", "Cordoba", "SantaFe", "LasHeras", "FacultadDeDerecho"]
@@ -277,6 +288,7 @@ const A = [
   "PlazaDeMayo",
   "Peru",
   "Piedras",
+  "Lima",
   "SaezPeña",
   "Congreso",
   "Pasco",
