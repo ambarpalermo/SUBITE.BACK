@@ -1,6 +1,6 @@
 import express, { RequestHandler } from "express";
 import { Request, Response } from "express";
-import { prisma } from "./database/db.ts";
+import { PrismaClient } from '@prisma/client'
 import cors from "cors";
 import { Tren, Vagon } from "@prisma/client";
 
@@ -8,6 +8,8 @@ const app = express();
 app.use(cors({
   origin: '*',
 }));
+
+const prisma = new PrismaClient()
 
 const logger: RequestHandler = (req, res, next) => {
   console.log(
