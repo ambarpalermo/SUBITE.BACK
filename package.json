@@ -19,6 +19,7 @@
   },
   "main": "index.ts",
   "scripts": {
-    "start": "npx nodemon index.ts"
+    "start": "npx nodemon index.ts",
+    "postinstall": "prisma generate"
   }
 }
