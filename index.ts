@@ -89,6 +89,9 @@ app.use(express.json());
 app.use(logger);
 
 //SETUP ---------------------------------------------------------------------------------------------
+app.get("/", (req:Request, res: Response) =>{
+  res.send("la ruta tiene algo")
+})
 
 app.post("/hard", async (req: Request, res: Response) => {
   console.log(req.body);
