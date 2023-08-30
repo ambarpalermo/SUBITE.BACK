@@ -5,7 +5,9 @@ import cors from "cors";
 import { Tren, Vagon } from "@prisma/client";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: '*',
+}));
 
 const logger: RequestHandler = (req, res, next) => {
   console.log(
@@ -87,10 +89,6 @@ app.use(express.json());
 app.use(logger);
 
 //SETUP ---------------------------------------------------------------------------------------------
-
-app.get("/test", (req: Request, res: Response) => {
-  res.send("Holaaaa");
-}) 
 
 app.post("/hard", async (req: Request, res: Response) => {
   console.log(req.body);
