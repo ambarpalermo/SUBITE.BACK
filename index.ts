@@ -88,6 +88,10 @@ app.use(logger);
 
 //SETUP ---------------------------------------------------------------------------------------------
 
+app.get("/test", (req: Request, res: Response) => {
+  res.send("Holaaaa");
+}) 
+
 app.post("/hard", async (req: Request, res: Response) => {
   console.log(req.body);
   console.log("recibido.hard");
