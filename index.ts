@@ -63,8 +63,20 @@ interface TrenProps {
   }[];
 }
 
+interface VagonHARDProps {
+  temp: number
+  hum: number
+  idVagon: number
+  idTren: number
+}
+
+interface VagonIAProps {
+  personas: string
+  idVagon: number
+  idTren: number
+}
+
 async function TrenMasCercano(ests: EstacionesProps[]) {
-  //console.log(ests);
   const TodosLosTrenes = await prisma.tren.findMany({
     include: {
       vagon: true,
@@ -98,33 +110,37 @@ app.get("/", (req:Request, res: Response) =>{
 app.post("/hard", async (req: Request, res: Response) => {
   console.log(req.body);
   console.log("recibido.hard");
-  let { temp, idVagon, idTren } = req.body;
-  console.log(temp);
-  const dbResult = await prisma.vagon.update({
-    where: {
-      id: idVagon,
-    },
-    data: {
-      temp: temp,
-    },
-  });
+  let arrayVagonesHARD: VagonHARDProps[] = req.body
+  arrayVagonesHARD.map(async(vagonHARD) => {
+    const dbResult = await prisma.vagon.update({
+      where: {
+        id: vagonHARD.idVagon,
+      },
+      data: {
+        temp: vagonHARD.temp,
+        hum: vagonHARD.hum
+      },
+    });
+  })
   res.json({ message: "hola kuki" });
 });
+
 
 app.post("/IA", async (req: Request, res: Response) => {
   console.log(req.body);
   console.log("recibido.IA");
-  let { personas, idVagon, idTren } = req.body;
-  console.log(personas);
-  const dbResult = await prisma.vagon.update({
-    where: {
-      id: idVagon,
-    },
-    data: {
-      personas: personas,
-    },
-  });
-  res.json({ message: "hola juana" });
+  let arrayVagonesIA: VagonIAProps[] = req.body
+  arrayVagonesIA.map(async(vagonIA) => {
+    const dbResult = await prisma.vagon.update({
+      where: {
+        id: vagonIA.idVagon,
+      },
+      data: {
+        personas: vagonIA.personas,
+      },
+    });
+  })
+  res.json({ message: "hola MONA" });
 });
 
 app.get("/IAdatos", async (req: Request, res: Response) => {
@@ -448,4 +464,4 @@ setInterval(async () => {
   });
 
   lugar += 1;
-}, 10000);
+}, 30000);
