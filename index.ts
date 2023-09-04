@@ -131,7 +131,7 @@ app.post("/IA", async (req: Request, res: Response) => {
   console.log(req.body);
   console.log("recibido.IA");
   let arrayVagonesIA: VagonIAProps[] = req.body;
-  Promise.all(
+  await Promise.all(
     arrayVagonesIA.map(async (vagonIA) => {
       const dbResult = await prisma.vagon.update({
         where: {
