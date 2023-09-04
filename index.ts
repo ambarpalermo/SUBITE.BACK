@@ -1,15 +1,17 @@
 import express, { RequestHandler } from "express";
 import { Request, Response } from "express";
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import { Tren, Vagon } from "@prisma/client";
 
 const app = express();
-app.use(cors({
-  origin: '*',
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const logger: RequestHandler = (req, res, next) => {
   console.log(
@@ -64,16 +66,16 @@ interface TrenProps {
 }
 
 interface VagonHARDProps {
-  temp: number
-  hum: number
-  idVagon: number
-  idTren: number
+  temp: number;
+  hum: number;
+  idVagon: number;
+  idTren: number;
 }
 
 interface VagonIAProps {
-  personas: string
-  idVagon: number
-  idTren: number
+  personas: string;
+  idVagon: number;
+  idTren: number;
 }
 
 async function TrenMasCercano(ests: EstacionesProps[]) {
@@ -103,43 +105,44 @@ app.use(express.json());
 app.use(logger);
 
 //SETUP ---------------------------------------------------------------------------------------------
-app.get("/", (req:Request, res: Response) =>{
-  res.send("la ruta tiene algo")
-})
+app.get("/", (req: Request, res: Response) => {
+  res.send("la ruta tiene algo");
+});
 
 app.post("/hard", async (req: Request, res: Response) => {
   console.log(req.body);
   console.log("recibido.hard");
-  let arrayVagonesHARD: VagonHARDProps[] = req.body
-  arrayVagonesHARD.map(async(vagonHARD) => {
+  let arrayVagonesHARD: VagonHARDProps[] = req.body;
+  arrayVagonesHARD.map(async (vagonHARD) => {
     const dbResult = await prisma.vagon.update({
       where: {
         id: vagonHARD.idVagon,
       },
       data: {
         temp: vagonHARD.temp,
-        hum: vagonHARD.hum
+        hum: vagonHARD.hum,
       },
     });
-  })
+  });
   res.json({ message: "hola kuki" });
 });
-
 
 app.post("/IA", async (req: Request, res: Response) => {
   console.log(req.body);
   console.log("recibido.IA");
-  let arrayVagonesIA: VagonIAProps[] = req.body
-  arrayVagonesIA.map(async(vagonIA) => {
-    const dbResult = await prisma.vagon.update({
-      where: {
-        id: vagonIA.idVagon,
-      },
-      data: {
-        personas: vagonIA.personas,
-      },
-    });
-  })
+  let arrayVagonesIA: VagonIAProps[] = req.body;
+  Promise.all(
+    arrayVagonesIA.map(async (vagonIA) => {
+      const dbResult = await prisma.vagon.update({
+        where: {
+          id: vagonIA.idVagon,
+        },
+        data: {
+          personas: vagonIA.personas,
+        },
+      });
+    })
+  );
   res.json({ message: "hola MONA" });
 });
 
@@ -274,7 +277,7 @@ app.listen(5000, () => {
 //       idTren: 6
 //     }
 //   });
-// }); 
+// });
 //creacion de base de datos
 
 // const estaciones = ["Hospitales", "ParquePatricios", "Caseros", "Inclan", "Humberto", "Venezuela", "Once", "Corrientes", "Cordoba", "SantaFe", "LasHeras", "FacultadDeDerecho"]
@@ -305,7 +308,6 @@ app.listen(5000, () => {
 //     },
 //   });
 // })
-
 
 const A = [
   "PlazaDeMayo",
@@ -420,12 +422,12 @@ setInterval(async () => {
       idEstActual: idEstacion4[0],
     },
   });
- //------------------------------------------------------------------------------------------------
- const dbConsult5 = await prisma.estacion.findMany({
-  where: {
-    idLinea: 1,
-    orden: (lugar + 8) % A.length,
-  },
+  //------------------------------------------------------------------------------------------------
+  const dbConsult5 = await prisma.estacion.findMany({
+    where: {
+      idLinea: 1,
+      orden: (lugar + 8) % A.length,
+    },
   });
 
   const idEstacion5 = dbConsult5.map((est, index) => {
@@ -441,12 +443,12 @@ setInterval(async () => {
       idEstActual: idEstacion5[0],
     },
   });
- //------------------------------------------------------------------------------------------------
- const dbConsult6 = await prisma.estacion.findMany({
-  where: {
-    idLinea: 1,
-    orden: (lugar + 10) % A.length,
-  },
+  //------------------------------------------------------------------------------------------------
+  const dbConsult6 = await prisma.estacion.findMany({
+    where: {
+      idLinea: 1,
+      orden: (lugar + 10) % A.length,
+    },
   });
 
   const idEstacion6 = dbConsult6.map((est, index) => {
