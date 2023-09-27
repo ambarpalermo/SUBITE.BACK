@@ -3,6 +3,11 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import { Tren, Vagon } from "@prisma/client";
+import { EstacionesProps, TrenProps, VagonHARDProps, VagonIAProps } from "./types";
+import { IARouter } from "./router/IaRouter.ts";
+import { HARDRouter } from "./router/HardRouter.ts";
+import { TRENRouter } from "./router/TrenRouter.ts";
+import { DINAMICARouter } from "./router/DinamicaRouter.ts";
 
 const app = express();
 app.use(
@@ -10,6 +15,11 @@ app.use(
     origin: "*",
   })
 );
+  
+app.use("/IA", IARouter);
+app.use("/HARD", HARDRouter);
+app.use("/TREN", TRENRouter);
+app.use("/DINAMICA", DINAMICARouter);
 
 const prisma = new PrismaClient();
 
@@ -46,37 +56,7 @@ const lineasColor = [
     color: "#c8b727ff",
   },
 ];
-interface EstacionesProps {
-  id: number;
-  nombre: string;
-  orden: string;
-}
 
-interface TrenProps {
-  id: number;
-  idLinea: number;
-  idEstActual: number;
-  vagon: {
-    id: number;
-    personas: string;
-    temp: number;
-    hum: number;
-    idTren: number;
-  }[];
-}
-
-interface VagonHARDProps {
-  temp: number;
-  hum: number;
-  idVagon: number;
-  idTren: number;
-}
-
-interface VagonIAProps {
-  personas: string;
-  idVagon: number;
-  idTren: number;
-}
 
 async function TrenMasCercano(ests: EstacionesProps[]) {
   const TodosLosTrenes = await prisma.tren.findMany({
@@ -456,3 +436,5 @@ setInterval(async () => {
 
   lugar += 1;
 }, 30000);
+
+module.exports = interfaceRouter;
