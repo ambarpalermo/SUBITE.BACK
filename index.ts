@@ -91,9 +91,7 @@ async function TrenMasCercano(ests: EstacionesProps[]) {
   const vagonesTren = ests.map((estacion) => {
     //console.log("Buscando tren en la estacion: " + estacion.id);
 
-    tren = TodosLosTrenes.find((t) => {
-      return estacion.id === t.idEstActual;
-    });
+    tren = TodosLosTrenes.find((t) => estacion.id === t.idEstActual);
 
     if (!tren) console.log("no se encontro");
     return tren as TrenProps;
@@ -171,9 +169,7 @@ app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
     },
   });
   const arr = dbResult.map((item, index) => {
-    dbResult.sort(function (a, b) {
-      return a.orden - b.orden;
-    });
+    dbResult.sort((a, b) => a.orden - b.orden);
   });
   const terminales = dbResult.map((item, index) => {
     const terminal1 = item.orden === 0 ? item.nombre : null;
@@ -231,36 +227,27 @@ app.post("/datos", async (req: Request, res: Response) => {
 
   let respuestaTren = [] as Vagon[][];
 
+  let ests = [] as EstacionesProps[];
+
   if (arrEstacionesOrdenadas.indexOf(Terminal) === 0) {
-    const ests = arrEstacionesOrdenadas.slice(
+    ests = arrEstacionesOrdenadas.slice(
       corteIndex + 1,
       arrEstacionesOrdenadas.length
     );
-    const INFO = await TrenMasCercano(ests);
-    const filteredTren = INFO.filter((tren) => tren !== undefined);
-
-    const filteredVagonesTren = filteredTren.map((tren) => {
-      return tren.vagon;
-    });
-
-    //console.log("Tren filtrado:) ", filteredTren)
-    console.log(filteredVagonesTren);
-    respuestaTren = filteredVagonesTren;
   }
   //el reverse te da vuelta el orden para que sea de la estacion del usuario para atras
   else {
-    const ests = arrEstacionesOrdenadas.slice(0, corteIndex + 1).reverse();
-    const INFO = await TrenMasCercano(ests);
-    const filteredTren = INFO.filter((tren) => tren !== undefined);
-
-    const filteredVagonesTren = filteredTren.map((tren) => {
-      return tren.vagon;
-    });
-    //console.log("Tren filtrado:) ", filteredTren)
-    console.log(filteredVagonesTren);
-    respuestaTren = filteredVagonesTren;
+    ests = arrEstacionesOrdenadas.slice(0, corteIndex + 1).reverse();
   }
-  return res.json(respuestaTren);
+  const INFO = await TrenMasCercano(ests);
+  const filteredTren = INFO.filter((tren) => tren !== undefined);
+
+  const filteredVagonesTren = filteredTren.map((tren) => {
+    return tren.vagon;
+  });
+  //console.log("Tren filtrado:) ", filteredTren)
+  console.log(filteredVagonesTren);
+  return res.json(filteredVagonesTren);
 });
 
 //config-----------------------------------------------------------------------------------
