@@ -15,13 +15,14 @@ app.use(
     origin: "*",
   })
 );
-  
+
+export {app} from "./index.ts";
 app.use("/IA", IARouter);
 app.use("/HARD", HARDRouter);
 app.use("/TREN", TRENRouter);
 app.use("/DINAMICA", DINAMICARouter);
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 const logger: RequestHandler = (req, res, next) => {
   console.log(
