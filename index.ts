@@ -67,8 +67,8 @@ app.get("/", (req: Request, res: Response) => {
 
 //config-----------------------------------------------------------------------------------
 
-app.listen(5000, () => {
-  console.log("Server on port 5000");
+app.listen(6000, () => {
+  console.log("Server on port 6000");
 });
 
 // app.get("/vagon", async (req: Request, res: Response) =>{

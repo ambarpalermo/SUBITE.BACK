@@ -3,6 +3,7 @@ import { Tren, Vagon } from "@prisma/client";
 import {Request, Response} from "express/index.ts";
 import {prisma} from "../index.ts";
 
+//funcion que devuelve el tren mas cercano a la estacion del usuario
 async function TrenMasCercano(ests: EstacionesProps[]) {
     const TodosLosTrenes = await prisma.tren.findMany({
       include: {
@@ -24,7 +25,7 @@ async function TrenMasCercano(ests: EstacionesProps[]) {
     return vagonesTren;
 }
 
-
+//funcion que devuelve los datos del vagon
 const FuncionDatos = async (req: Request, res: Response) => {
     let { NomLinea, Estacion, Terminal } = req.body;
     console.log(req.body);

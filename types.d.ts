@@ -37,11 +37,3 @@ export interface VagonIAProps {
   idVagon: number;
   idTren: number;
 }
-
-export type Vagon = {
-  id: number
-  personas: string
-  temp: number
-  hum: number
-  idTren: number
-}
