@@ -2,8 +2,6 @@ import {VagonHARDProps} from "../types.ts";
 import {Request, Response} from "express/index.ts";
 import {prisma} from "../index.ts";
 
-//app.post("/hard", funcionhard)
-
 const FuncionHard = async (req: Request, res: Response) => {
     console.log(req.body);
     console.log("recibido.hard");
@@ -23,4 +21,5 @@ const FuncionHard = async (req: Request, res: Response) => {
     );
     res.json({ message: "hola kuki" });
   };
-  
+
+  export {FuncionHard};
