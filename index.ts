@@ -8,7 +8,7 @@ import { HARDRouter } from "./router/HardRouter.ts";
 import { TRENRouter } from "./router/TrenRouter.ts";
 import { DINAMICARouter } from "./router/DinamicaRouter.ts";
 
-const app = express();
+export const app = express();
 
 app.use(
   cors({
@@ -20,8 +20,6 @@ app.use("/IA", IARouter);
 app.use("/HARD", HARDRouter);
 app.use("/TREN", TRENRouter);
 app.use("/DINAMICA", DINAMICARouter);
-
-export const prisma = new PrismaClient();
 
 const logger: RequestHandler = (req, res, next) => {
   console.log(
@@ -273,3 +271,4 @@ setInterval(async () => {
 }, 30000);
 
 export { lineasColor };
+export const prisma = new PrismaClient();
