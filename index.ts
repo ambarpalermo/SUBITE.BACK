@@ -3,12 +3,13 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 
-import { IARouter } from "./router/IaRouter.ts";
-import { HARDRouter } from "./router/HardRouter.ts";
-import { TRENRouter } from "./router/TrenRouter.ts";
-import { DINAMICARouter } from "./router/DinamicaRouter.ts";
+import IARouter from "./router/IaRouter.ts";
+import HARDRouter from "./router/HardRouter.ts";
+import TRENRouter from "./router/TrenRouter.ts";
+import DINAMICARouter from "./router/DinamicaRouter.ts";
+import GRAFICORouter from "./router/GraficoRouter.ts";
 
-export const app = express();
+const app = express();
 
 app.use(
   cors({
@@ -20,6 +21,7 @@ app.use("/IA", IARouter);
 app.use("/HARD", HARDRouter);
 app.use("/TREN", TRENRouter);
 app.use("/DINAMICA", DINAMICARouter);
+app.use("/GRAFICO", GRAFICORouter);
 
 const logger: RequestHandler = (req, res, next) => {
   console.log(
@@ -65,8 +67,8 @@ app.get("/", (req: Request, res: Response) => {
 
 //config-----------------------------------------------------------------------------------
 
-app.listen(6000, () => {
-  console.log("Server on port 6000");
+app.listen(9000, () => {
+  console.log("Server on port 9000");
 });
 
 // app.get("/vagon", async (req: Request, res: Response) =>{

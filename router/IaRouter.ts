@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import { FuncionIA } from '../controllers/IaController.ts';
 
-export const IARouter = express.Router();
-const router: Router = express.Router();
-
+const router = express.Router();
 router.post('/IA', FuncionIA);
+
+export default router;

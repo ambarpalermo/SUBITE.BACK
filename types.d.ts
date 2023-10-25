@@ -37,3 +37,12 @@ export interface VagonIAProps {
   idVagon: number;
   idTren: number;
 }
+
+export interface GraficoProps {
+  personas: number;
+  color: string;
+  dia: string;
+  hora: number;
+  idTren: number;
+}
+
