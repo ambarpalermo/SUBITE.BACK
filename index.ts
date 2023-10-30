@@ -10,12 +10,20 @@ import DINAMICARouter from "./router/DinamicaRouter.ts";
 import GRAFICORouter from "./router/GraficoRouter.ts";
 
 const app = express();
+app.use(express.json())
 
 app.use(
   cors({
     origin: "*",
   })
 );
+const logger: RequestHandler = (req, res, next) => {
+  console.log(
+    `Route Recieved: ${req.protocol}://${req.get("host")}${req.originalUrl}`
+  );
+  next();
+};
+app.use(logger);
 
 app.use("/IA", IARouter);
 app.use("/HARD", HARDRouter);
@@ -23,12 +31,7 @@ app.use("/TREN", TRENRouter);
 app.use("/DINAMICA", DINAMICARouter);
 app.use("/GRAFICO", GRAFICORouter);
 
-const logger: RequestHandler = (req, res, next) => {
-  console.log(
-    `Route Recieved: ${req.protocol}://${req.get("host")}${req.originalUrl}`
-  );
-  next();
-};
+
 
 const lineasColor = [
   {
@@ -57,8 +60,8 @@ const lineasColor = [
   },
 ];
 
-app.use(express.json());
-app.use(logger);
+
+
 
 //SETUP ---------------------------------------------------------------------------------------------
 app.get("/", (req: Request, res: Response) => {

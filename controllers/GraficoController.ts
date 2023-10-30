@@ -1,21 +1,27 @@
-import {Request, Response} from "express/index.ts";
-import {prisma} from "../index.ts";
-import {GraficoProps} from "../types.ts"
+import { Request, Response } from "express/index.ts";
+import { prisma } from "../index.ts";
+import { GraficoProps } from "../types.ts";
 
 const FuncionGrafico = async (req: Request, res: Response) => {
-    console.log(req.body);
-    console.log("recibido.Grafico");
-    let arrayDatosGrafico: GraficoProps[] = req.body;
-    await Promise.all(
-        arrayDatosGrafico.map(async (datos) => {
-            const dbResult = await prisma.tren.findFirst({
-                where: {
-                    id: datos.idTren,
-                }
-            });
-            console.log(dbResult)
-        })
-    );
-}
+  console.log("recibido.Grafico");
+  let DatosGrafico: GraficoProps = req.body;
+  console.log(DatosGrafico);
+  const dbResult = await prisma.tren.findFirst({
+    where: {
+      id: DatosGrafico.idTren,
+    },
+  });
+  console.log(dbResult);
 
-export {FuncionGrafico};
+  const guardarDatosDB = await prisma.grafico.create({
+    data:{
+        personas: DatosGrafico.personas,
+        color: DatosGrafico.color,
+        dia: DatosGrafico.dia,
+        hora: DatosGrafico.hora,
+        idEstGraf: dbResult!.idEstActual
+    }
+  })
+};
+
+export { FuncionGrafico };

@@ -3,6 +3,7 @@ import {prisma} from "../index.ts";
 import {lineasColor} from "../index.ts";
 
 const FuncionDinamica = async (req: Request, res: Response) => {
+  console.log(req)
   console.log("entre");
   const nomLinea = req.params.id;
   const linea = await prisma.linea.findFirst({
