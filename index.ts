@@ -8,6 +8,7 @@ import HARDRouter from "./router/HardRouter.ts";
 import TRENRouter from "./router/TrenRouter.ts";
 import DINAMICARouter from "./router/DinamicaRouter.ts";
 import GRAFICORouter from "./router/GraficoRouter.ts";
+import DINAMICAGRAFRouter from "./router/DinamicaGrafRouter.ts"
 
 const app = express();
 app.use(express.json())
@@ -30,7 +31,7 @@ app.use("/HARD", HARDRouter);
 app.use("/TREN", TRENRouter);
 app.use("/DINAMICA", DINAMICARouter);
 app.use("/GRAFICO", GRAFICORouter);
-
+app.use("/DINAMICAGRAFICO", DINAMICAGRAFRouter);
 
 
 const lineasColor = [
@@ -60,11 +61,8 @@ const lineasColor = [
   },
 ];
 
-
-
-
 //SETUP ---------------------------------------------------------------------------------------------
-app.get("/", (req: Request, res: Response) => {
+app.get("/", async (req: Request, res: Response) => {
   res.send("la ruta tiene algo");
 });
 

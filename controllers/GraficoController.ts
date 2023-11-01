@@ -4,7 +4,7 @@ import { GraficoProps } from "../types.ts";
 
 const FuncionGrafico = async (req: Request, res: Response) => {
   console.log("recibido.Grafico");
-  let DatosGrafico: GraficoProps = req.body;
+  let DatosGrafico: GraficoProps = req.body;  
   console.log(DatosGrafico);
   const dbResult = await prisma.tren.findFirst({
     where: {
@@ -19,9 +19,11 @@ const FuncionGrafico = async (req: Request, res: Response) => {
         color: DatosGrafico.color,
         dia: DatosGrafico.dia,
         hora: DatosGrafico.hora,
+        fecha: DatosGrafico.fecha,
         idEstGraf: dbResult!.idEstActual
     }
   })
+
 };
 
 export { FuncionGrafico };

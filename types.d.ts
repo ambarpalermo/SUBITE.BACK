@@ -43,6 +43,7 @@ export interface GraficoProps {
   color: string;
   dia: string;
   hora: number;
+  fecha: DateTime;
   idTren: number;
 }
 

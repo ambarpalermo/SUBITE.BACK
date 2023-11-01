@@ -4,21 +4,24 @@ import {prisma} from "../index.ts";
 
 const FuncionHard = async (req: Request, res: Response) => {
     console.log(req.body);
-    console.log("recibido.hard");
-    let arrayVagonesHARD: VagonHARDProps[] = req.body;
-    await Promise.all(
-      arrayVagonesHARD.map(async (vagonHARD) => {
-        const dbResult = await prisma.vagon.update({
-          where: {
-            id: vagonHARD.idVagon,
-          },
-          data: {
-            temp: vagonHARD.temp,
-            hum: vagonHARD.hum,
-          },
-        });
-      })
-    );
+
+    // const body = await? JSON.parse(req.body);
+
+    // console.log("recibido.hard");
+    // let arrayVagonesHARD: VagonHARDProps[] = body;
+    // await Promise.all(
+    //   arrayVagonesHARD.map(async (vagonHARD) => {
+    //     const dbResult = await prisma.vagon.update({
+    //       where: {
+    //         id: vagonHARD.idVagon,
+    //       },
+    //       data: {
+    //         temp: vagonHARD.temp,
+    //         hum: vagonHARD.hum,
+    //       },
+    //     });
+    //   })
+    // );
     res.json({ message: "hola kuki" });
   };
 

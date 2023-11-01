@@ -62,6 +62,7 @@ model Grafico {
   color String
   dia String
   hora Int
+  fecha DateTime
   idEstActual Tren @relation(fields: [idEstGraf], references: [id])
   idEstGraf Int
 
