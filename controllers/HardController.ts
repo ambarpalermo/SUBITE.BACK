@@ -22,6 +22,7 @@ const FuncionHard = async (req: Request, res: Response) => {
     //     });
     //   })
     // );
+
     res.json({ message: "hola kuki" });
   };
 
