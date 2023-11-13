@@ -21,6 +21,7 @@ model Tren {
   idLinea Int
   idEstActual Int  
   vagon Vagon []
+  grafico Grafico[]
 
   @@index([idLinea], name: "idLinea")
 }
@@ -55,3 +56,15 @@ model Vagon {
   @@index([idTren], name: "idTren")
 }
 
+model Grafico {
+  id Int @unique @default(autoincrement())
+  personas Int
+  color String
+  dia String
+  hora Int
+  fecha String
+  idEstActual Tren @relation(fields: [idEstGraf], references: [id])
+  idEstGraf Int
+
+  @@index([idEstGraf], name: "idEstGraf")
+}

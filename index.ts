@@ -2,23 +2,37 @@ import express, { RequestHandler } from "express";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
-import { Tren, Vagon } from "@prisma/client";
+
+import IARouter from "./router/IaRouter.ts";
+import HARDRouter from "./router/HardRouter.ts";
+import TRENRouter from "./router/TrenRouter.ts";
+import DINAMICARouter from "./router/DinamicaRouter.ts";
+import GRAFICORouter from "./router/GraficoRouter.ts";
+import DINAMICAGRAFRouter from "./router/DinamicaGrafRouter.ts"
 
 const app = express();
+app.use(express.json())
+
 app.use(
   cors({
     origin: "*",
   })
 );
-
-const prisma = new PrismaClient();
-
 const logger: RequestHandler = (req, res, next) => {
   console.log(
     `Route Recieved: ${req.protocol}://${req.get("host")}${req.originalUrl}`
   );
   next();
 };
+app.use(logger);
+
+app.use("/IA", IARouter);
+app.use("/HARD", HARDRouter);
+app.use("/TREN", TRENRouter);
+app.use("/DINAMICA", DINAMICARouter);
+app.use("/GRAFICO", GRAFICORouter);
+app.use("/DINAMICAGRAFICO", DINAMICAGRAFRouter);
+
 
 const lineasColor = [
   {
@@ -46,214 +60,16 @@ const lineasColor = [
     color: "#c8b727ff",
   },
 ];
-interface EstacionesProps {
-  id: number;
-  nombre: string;
-  orden: string;
-}
-
-interface TrenProps {
-  id: number;
-  idLinea: number;
-  idEstActual: number;
-  vagon: {
-    id: number;
-    personas: string;
-    temp: number;
-    hum: number;
-    idTren: number;
-  }[];
-}
-
-interface VagonHARDProps {
-  temp: number;
-  hum: number;
-  idVagon: number;
-  idTren: number;
-}
-
-interface VagonIAProps {
-  personas: string;
-  idVagon: number;
-  idTren: number;
-}
-
-async function TrenMasCercano(ests: EstacionesProps[]) {
-  const TodosLosTrenes = await prisma.tren.findMany({
-    include: {
-      vagon: true,
-    },
-  });
-  //console.log(TodosLosTrenes)
-
-  let tren: (Tren & { vagon: Vagon[] }) | undefined;
-
-  const vagonesTren = ests.map((estacion) => {
-    //console.log("Buscando tren en la estacion: " + estacion.id);
-
-    tren = TodosLosTrenes.find((t) => estacion.id === t.idEstActual);
-
-    if (!tren) console.log("no se encontro");
-    return tren as TrenProps;
-  });
-  return vagonesTren;
-}
-
-app.use(express.json());
-app.use(logger);
 
 //SETUP ---------------------------------------------------------------------------------------------
-app.get("/", (req: Request, res: Response) => {
+app.get("/", async (req: Request, res: Response) => {
   res.send("la ruta tiene algo");
-});
-
-app.post("/hard", async (req: Request, res: Response) => {
-  console.log(req.body);
-  console.log("recibido.hard");
-  let arrayVagonesHARD: VagonHARDProps[] = req.body;
-  await Promise.all(
-    arrayVagonesHARD.map(async (vagonHARD) => {
-      const dbResult = await prisma.vagon.update({
-        where: {
-          id: vagonHARD.idVagon,
-        },
-        data: {
-          temp: vagonHARD.temp,
-          hum: vagonHARD.hum,
-        },
-      });
-    })
-  );
-  res.json({ message: "hola kuki" });
-});
-
-app.post("/IA", async (req: Request, res: Response) => {
-  console.log(req.body);
-  console.log("recibido.IA");
-  let arrayVagonesIA: VagonIAProps[] = req.body;
-  await Promise.all(
-    arrayVagonesIA.map(async (vagonIA) => {
-      const dbResult = await prisma.vagon.update({
-        where: {
-          id: vagonIA.idVagon,
-        },
-        data: {
-          personas: vagonIA.personas,
-        },
-      });
-    })
-  );
-  res.json({ message: "hola MONA" });
-});
-
-app.get("/IAdatos", async (req: Request, res: Response) => {
-  const dbResult = await prisma.vagon.findMany({
-    where: {
-      idTren: 1,
-    },
-  });
-  console.log(dbResult);
-  res.json(dbResult);
-});
-
-app.post("/linea/:id/estaciones", async (req: Request, res: Response) => {
-  const nomLinea = req.params.id;
-  const linea = await prisma.linea.findFirst({
-    where: {
-      letra: nomLinea,
-    },
-  });
-  const dbResult = await prisma.estacion.findMany({
-    where: {
-      idLinea: linea?.id,
-    },
-  });
-  const arr = dbResult.map((item, index) => {
-    dbResult.sort((a, b) => a.orden - b.orden);
-  });
-  const terminales = dbResult.map((item, index) => {
-    const terminal1 = item.orden === 0 ? item.nombre : null;
-    const terminal2 =
-      item.orden === Math.ceil(dbResult.length / 2 - 1) ? item.nombre : null;
-    Math.ceil(dbResult.length / 2);
-    const arr = [terminal1, terminal2];
-    return arr;
-  });
-  const lineaFound = lineasColor.find((letter) => letter.id === nomLinea);
-  if (lineaFound) {
-    const color = lineaFound.color;
-    console.log(color);
-    console.log(Math.ceil(dbResult.length / 2));
-    console.log(terminales);
-    res.json({ terminales: terminales, result: dbResult, color: color });
-  }
-});
-
-app.post("/datos", async (req: Request, res: Response) => {
-  let { NomLinea, Estacion, Terminal } = req.body;
-  console.log(req.body);
-  const linea = await prisma.linea.findFirst({
-    where: {
-      letra: NomLinea,
-    },
-  });
-  const dbResult = await prisma.estacion.findMany({
-    where: {
-      idLinea: linea?.id,
-      terminal: Terminal,
-    },
-  });
-  //el sort ordena el array, fijandose el el orden de A menos el orden de B y asi se fija cual va primero segun el resultado
-
-  const arrEstacionesOrdenadas = [] as EstacionesProps[];
-
-  dbResult.sort(function (a, b) {
-    return a.orden - b.orden;
-  });
-
-  // Recorrer el array ordenado y agregar los nombres al nuevo array
-  dbResult.map((_, index) => {
-    if (dbResult.length > index)
-      arrEstacionesOrdenadas.push({
-        id: dbResult[index].id,
-        nombre: dbResult[index].nombre,
-        orden: dbResult[index].orden.toString(),
-      });
-  });
-
-  const corte = arrEstacionesOrdenadas.find((item) => item.nombre === Estacion);
-
-  const corteIndex = arrEstacionesOrdenadas.indexOf(corte!);
-
-  let respuestaTren = [] as Vagon[][];
-
-  let ests = [] as EstacionesProps[];
-
-  if (arrEstacionesOrdenadas.indexOf(Terminal) === 0) {
-    ests = arrEstacionesOrdenadas.slice(
-      corteIndex + 1,
-      arrEstacionesOrdenadas.length
-    );
-  }
-  //el reverse te da vuelta el orden para que sea de la estacion del usuario para atras
-  else {
-    ests = arrEstacionesOrdenadas.slice(0, corteIndex + 1).reverse();
-  }
-  const INFO = await TrenMasCercano(ests);
-  const filteredTren = INFO.filter((tren) => tren !== undefined);
-
-  const filteredVagonesTren = filteredTren.map((tren) => {
-    return tren.vagon;
-  });
-  //console.log("Tren filtrado:) ", filteredTren)
-  console.log(filteredVagonesTren);
-  return res.json(filteredVagonesTren);
 });
 
 //config-----------------------------------------------------------------------------------
 
-app.listen(5000, () => {
-  console.log("Server on port 5000");
+app.listen(9000, () => {
+  console.log("Server on port 9000");
 });
 
 // app.get("/vagon", async (req: Request, res: Response) =>{
@@ -455,4 +271,7 @@ setInterval(async () => {
   });
 
   lugar += 1;
-}, 10000);
+}, 30000);
+
+export { lineasColor };
+export const prisma = new PrismaClient();
