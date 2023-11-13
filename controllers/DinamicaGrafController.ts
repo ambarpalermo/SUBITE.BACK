@@ -6,19 +6,42 @@ import { GraficoProps } from "../types.ts";
 const FuncionDinamicaGraf = async (req: Request, res: Response) => {
     console.log(req.params)
     const diaRecibido = req.params.dia;
+    const idLinea = parseInt(req.params.idLinea);
     const horaRecibida = parseInt(req.params.hora);
+
+    const estaciones = await prisma.estacion.findMany({
+        where: {
+            idLinea: idLinea
+        },
+        select: {
+            id: true,
+            nombre: true
+        }
+    });
+
     const dbResult = await prisma.grafico.groupBy({
         by: ['idEstGraf'],
         where: {
-          dia: diaRecibido,
+          fecha: diaRecibido,
           hora: horaRecibida
         },
-        _avg:{
+        _avg: {
             personas: true
         }
-
     })
-    console.log(dbResult)
+
+    const result = dbResult.map((nombre) => {
+        let nombreEstacion = ""; 
+        estaciones.map((estacion) => {
+            if (estacion.id === nombre.idEstGraf) {
+                nombreEstacion = estacion.nombre;
+            }
+        })
+
+        return { average: nombre._avg.personas, nombreEstacion }
+    })
+
+    console.log(result)
     res.json({ message: "respuesta promedio GRAFICO" });
 
     //COMO PASAR LOS ID DE ESTACION A NOMBRES
