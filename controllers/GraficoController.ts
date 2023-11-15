@@ -1,6 +1,6 @@
-import { Request, Response } from "express/index.ts";
-import { prisma } from "../index.ts";
-import { GraficoProps } from "../types.ts";
+import { Request, Response } from "express/index.js";
+import { prisma } from "../index.js";
+import { GraficoProps } from "../types.js";
 
 const FuncionGrafico = async (req: Request, res: Response) => {
   console.log("recibido.Grafico");

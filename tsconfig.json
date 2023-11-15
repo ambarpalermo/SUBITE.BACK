@@ -2,8 +2,8 @@
     "compilerOptions": {
       "module": "ESNext",
       "esModuleInterop": true,
-      "target": "ES5",
-      "moduleResolution": "Node",
+      "target": "ES6",
+      "moduleResolution": "Bundler",
       "outDir": "dist",
       "forceConsistentCasingInFileNames": true,
       "noFallthroughCasesInSwitch": true,
@@ -11,13 +11,13 @@
       "strict": true,
       "noImplicitAny": true,
       "useUnknownInCatchVariables": false,
-      "inlineSourceMap": true,
-      "noEmit": true,
-      "allowImportingTsExtensions": true,
+      "inlineSourceMap": true
     },
     "ts-node": {
         "esm": true
     },
-    "lib": ["esnext"]
+    "lib": ["esnext"],
+    "include": ["**/*.ts"],
+    "exclude": ["node_modules", "dist"]
 }
 

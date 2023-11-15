@@ -3,12 +3,12 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 
-import IARouter from "./router/IaRouter.ts";
-import HARDRouter from "./router/HardRouter.ts";
-import TRENRouter from "./router/TrenRouter.ts";
-import DINAMICARouter from "./router/DinamicaRouter.ts";
-import GRAFICORouter from "./router/GraficoRouter.ts";
-import DINAMICAGRAFRouter from "./router/DinamicaGrafRouter.ts"
+import IARouter from "./router/IaRouter.js";
+import HARDRouter from "./router/HardRouter.js";
+import TRENRouter from "./router/TrenRouter.js";
+import DINAMICARouter from "./router/DinamicaRouter.js";
+import GRAFICORouter from "./router/GraficoRouter.js";
+import DINAMICAGRAFRouter from "./router/DinamicaGrafRouter.js"
 
 const app = express();
 app.use(express.json())

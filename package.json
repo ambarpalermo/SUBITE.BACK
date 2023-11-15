@@ -20,6 +20,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "npx nodemon index.ts",
+    "build": "npx tsc --build",
     "postinstall": "prisma generate"
   }
 }

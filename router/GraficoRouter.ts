@@ -1,5 +1,5 @@
 import express, { Response, Router } from "express";
-import { FuncionGrafico } from "../controllers/GraficoController.ts";
+import { FuncionGrafico } from "../controllers/GraficoController.js";
 const router = express.Router();
 
 router.post("/grafico", FuncionGrafico);

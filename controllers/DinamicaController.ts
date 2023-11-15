@@ -1,9 +1,9 @@
-import {Request, Response} from "express/index.ts";
-import {prisma} from "../index.ts";
-import {lineasColor} from "../index.ts";
+import {Request, Response} from "express/index.js";
+import {prisma} from "../index.js";
+import {lineasColor} from "../index.js";
 
 const FuncionDinamica = async (req: Request, res: Response) => {
-  console.log(req)
+  console.log(req.body)
   console.log("entre");
   const nomLinea = req.params.id;
   const linea = await prisma.linea.findFirst({

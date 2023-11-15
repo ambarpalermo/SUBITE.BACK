@@ -1,6 +1,6 @@
-import {VagonIAProps} from "../types.ts";
-import {Request, Response} from "express/index.ts";
-import {prisma} from "../index.ts";
+import {VagonIAProps} from "../types.js";
+import {Request, Response} from "express/index.js";
+import {prisma} from "../index.js";
 
 const FuncionIA = async (req: Request, res: Response) => {
     console.log(req.body);

@@ -1,7 +1,7 @@
-import { EstacionesProps, TrenProps, } from "../types.ts";
+import { EstacionesProps, TrenProps, } from "../types.js";
 import { Tren, Vagon } from "@prisma/client";
-import {Request, Response} from "express/index.ts";
-import {prisma} from "../index.ts";
+import {Request, Response} from "express/index.js";
+import {prisma} from "../index.js";
 
 //funcion que devuelve el tren mas cercano a la estacion del usuario
 async function TrenMasCercano(ests: EstacionesProps[]) {

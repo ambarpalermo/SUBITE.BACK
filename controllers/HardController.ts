@@ -1,6 +1,6 @@
-import {VagonHARDProps} from "../types.ts";
-import {Request, Response} from "express/index.ts";
-import {prisma} from "../index.ts";
+import {VagonHARDProps} from "../types.js";
+import {Request, Response} from "express/index.js";
+import {prisma} from "../index.js";
 
 const FuncionHard = async (req: Request, res: Response) => {
     console.log(req.body);
