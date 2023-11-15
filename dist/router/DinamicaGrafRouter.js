@@ -1,0 +1,6 @@
+import express from "express";
+import { FuncionDinamicaGraf } from "../controllers/DinamicaGrafController.js";
+const router = express.Router();
+router.post("/dinamicaGraf/:dia/:hora/:idLinea", FuncionDinamicaGraf);
+export default router;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiRGluYW1pY2FHcmFmUm91dGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vcm91dGVyL0RpbmFtaWNhR3JhZlJvdXRlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLE9BQTZCLE1BQU0sU0FBUyxDQUFDO0FBQ3BELE9BQU8sRUFBRSxtQkFBbUIsRUFBRSxNQUFNLDBDQUEwQyxDQUFDO0FBQy9FLE1BQU0sTUFBTSxHQUFHLE9BQU8sQ0FBQyxNQUFNLEVBQUUsQ0FBQztBQUVoQyxNQUFNLENBQUMsSUFBSSxDQUFDLG1DQUFtQyxFQUFFLG1CQUFtQixDQUFDLENBQUM7QUFFdEUsZUFBZSxNQUFNLENBQUMifQ==
