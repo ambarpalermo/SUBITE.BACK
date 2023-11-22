@@ -4,26 +4,28 @@ import { GraficoProps } from "../types.js";
 
 const FuncionGrafico = async (req: Request, res: Response) => {
   console.log("recibido.Grafico");
-  let DatosGrafico: GraficoProps = req.body;  
+  let DatosGrafico: GraficoProps[] = req.body;
   console.log(DatosGrafico);
-  const dbResult = await prisma.tren.findFirst({
-    where: {
-      id: DatosGrafico.idTren,
-    },
+
+  DatosGrafico.forEach(async (tren) => {
+    const dbResult = await prisma.tren.findFirst({
+      where: {
+        id: tren.idTren,
+      },
+    });
+    const guardarDatosDB = await prisma.grafico.create({
+      data: {
+        personas: tren.personas,
+        color: tren.color,
+        dia: tren.dia,
+        hora: tren.hora,
+        fecha: tren.fecha,
+        idEstGraf: dbResult!.idEstActual,
+      },
+    });
   });
-  console.log(dbResult);
 
-  const guardarDatosDB = await prisma.grafico.create({
-    data:{
-        personas: DatosGrafico.personas,
-        color: DatosGrafico.color,
-        dia: DatosGrafico.dia,
-        hora: DatosGrafico.hora,
-        fecha: DatosGrafico.fecha,
-        idEstGraf: dbResult!.idEstActual
-    }
-  })
-
+  res.json({ message: "respuesta create GRAFICO" });
 };
 
 export { FuncionGrafico };
