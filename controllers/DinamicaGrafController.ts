@@ -42,7 +42,7 @@ const FuncionDinamicaGraf = async (req: Request, res: Response) => {
     })
 
     console.log(result)
-    res.json({ message: "respuesta promedio GRAFICO" });
+    
 
     //COMO PASAR LOS ID DE ESTACION A NOMBRES
     // const AVRG = dbResult.find((avrg) => avrg._avg)

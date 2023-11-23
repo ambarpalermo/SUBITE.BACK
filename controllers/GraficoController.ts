@@ -13,6 +13,7 @@ const FuncionGrafico = async (req: Request, res: Response) => {
         id: tren.idTren,
       },
     });
+    
     const guardarDatosDB = await prisma.grafico.create({
       data: {
         personas: tren.personas,
