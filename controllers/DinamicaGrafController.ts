@@ -40,8 +40,8 @@ const FuncionDinamicaGraf = async (req: Request, res: Response) => {
 
         return { average: nombre._avg.personas, nombreEstacion }
     })
-
     console.log(result)
+    res.json(result)
     
 
     //COMO PASAR LOS ID DE ESTACION A NOMBRES
